@@ -21,26 +21,48 @@ Built with Python (Flask) + SQLite + Excel export + Email reports.
 
 ---
 
-## 🚀 How to Run
+## 🚀 Installation & Setup
 
-### Requirements
-- Python 3.8+
-- pip
+### Windows Users (Easiest)
 
-### Steps
+#### Option 1: Run Setup Script (Recommended)
+1. Download and extract the folder
+2. **Double-click `setup.bat`** 
+3. Wait for installation to complete
+4. Click **"FreshClean Billing"** shortcut on your Desktop to run
+5. Open browser → `http://localhost:5055`
 
+#### Option 2: Run Pre-built Executable
+1. Navigate to the folder
+2. Double-click **`dist/app.exe`**
+3. Open browser → `http://localhost:5055`
+
+#### Option 3: Manual Run (Python Required)
 ```bash
-# 1. Go to the app folder
-cd dryclean_app
-
-# 2. Run the startup script (Linux/Mac)
-bash start.sh
-
-# OR run directly:
+# 1. Install Python first (https://www.python.org/downloads/)
+# 2. Double-click setup.bat OR run:
 pip install flask flask-cors openpyxl
-python3 app.py
+python app.py
 
 # 3. Open browser
+# http://localhost:5055
+```
+
+### Linux/Mac Users
+
+```bash
+# 1. Install Python 3.8+
+sudo apt-get install python3 python3-pip  # Ubuntu/Debian
+
+# 2. Install dependencies
+pip install flask flask-cors openpyxl
+
+# 3. Run the app
+bash start.sh
+# OR
+python3 app.py
+
+# 4. Open browser
 # http://localhost:5055
 ```
 
@@ -70,13 +92,21 @@ python3 app.py
 
 ```
 dryclean_app/
-├── app.py          ← Flask backend + all APIs
+├── app.py              ← Flask backend + all APIs
+├── setup.bat           ← Windows setup script (run this first!)
+├── run.bat             ← Quick launcher for Windows
+├── dist/
+│   └── app.exe        ← Standalone Windows executable
 ├── templates/
-│   └── index.html  ← Full frontend UI
-├── dryclean.db     ← SQLite database (auto-created)
-├── start.sh        ← Startup script
-└── README.md       ← This file
+│   └── index.html     ← Full frontend UI
+├── dryclean.db        ← SQLite database (auto-created)
+├── start.sh           ← Startup script for Linux/Mac
+└── README.md          ← This file
 ```
+
+**Files to use:**
+- **Windows**: Use `setup.bat` for first-time setup, then `dist/app.exe` or `run.bat` to launch
+- **Linux/Mac**: Use `start.sh` to launch
 
 ---
 
