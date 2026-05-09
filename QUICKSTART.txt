@@ -1,0 +1,111 @@
+╔════════════════════════════════════════════════════════════════════╗
+║         FreshClean Dry Cleaning Billing System                      ║
+║                    QUICK START GUIDE                                ║
+╚════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 INSTALLATION (Windows)
+
+Step 1: Download
+  ✓ Extract the folder to any location on your computer
+
+Step 2: Setup
+  ✓ Double-click "setup.bat"
+  ✓ Wait for installation to complete
+  ✓ A desktop shortcut will be created automatically
+
+Step 3: Launch
+  ✓ Double-click "FreshClean Billing" on your Desktop
+  ✓ Or run "run.bat" from the folder
+  ✓ Or double-click "app.exe" in the dist folder
+
+Step 4: Access
+  ✓ Open your browser
+  ✓ Go to: http://localhost:5055
+  ✓ You're ready to use the system!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 BASIC WORKFLOW
+
+1. ADD A CUSTOMER
+   Customers → "New Customer" button → Fill details → Save
+
+2. CREATE A BILL
+   Bills → "New Bill" button → Select customer → Add items → Calculate → Save
+
+3. ADD ITEMS TO BILL
+   Select service from dropdown → Enter quantity → System auto-calculates amount
+
+4. PRINT RECEIPT
+   Open bill → Print button → Print from browser (Ctrl+P)
+
+5. RECORD PAYMENT
+   Open bill → "Pay" button → Enter amount paid → Save
+
+6. EXPORT REPORTS
+   Reports → Select month → Download Excel file
+   (Contains: Bills Summary, Itemized Details, Customer Ledger)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚙️ SETTINGS
+
+Access Settings to:
+  • Store name, address, phone, email
+  • Tax percentage
+  • Email configuration (for sending reports)
+  • Default bill terms
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📧 EMAIL SETUP (Optional)
+
+To send reports via email:
+
+1. Go to Settings
+2. Find "Email Configuration" section
+3. For Gmail:
+   • SMTP Host: smtp.gmail.com
+   • SMTP Port: 587
+   • Email: your-email@gmail.com
+   • Password: Your Gmail App Password (NOT your regular password)
+   
+4. To get Gmail App Password:
+   • Go to Google Account: myaccount.google.com
+   • Security (left menu)
+   • 2-Step Verification (enable if not done)
+   • App Passwords (near 2-Step Verification)
+   • Select "Mail" and "Windows Computer"
+   • Copy the password shown and paste in Settings
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🛠️ TROUBLESHOOTING
+
+Problem: App won't start
+→ Run setup.bat again to install dependencies
+
+Problem: Port 5055 already in use
+→ Close other apps using this port or edit app.py (change port 5055)
+
+Problem: Can't access http://localhost:5055
+→ Make sure app is running (terminal window should show "Running on...")
+→ Try http://127.0.0.1:5055 instead
+
+Problem: Database errors
+→ Delete dryclean.db and restart (new database will be created)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📞 SUPPORT
+
+For issues or feature requests, visit:
+https://github.com/bobys416/Drycleaners-billing
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Happy billing! 🧺
+
+Built with Flask + SQLite | v1.0
