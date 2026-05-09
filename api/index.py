@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
 
 from flask import Flask, request, jsonify, send_file, render_template
 from flask_cors import CORS
-import sqlite3, json, smtplib, io
+import sqlite3, json, smtplib, io, socket
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -527,21 +527,53 @@ Regards,
         encoders.encode_base64(part)
         part.add_header('Content-Disposition', f'attachment; filename="report_{month}.xlsx"')
         msg.attach(part)
-        with smtplib.SMTP(smtp_host, smtp_port) as server:
+        
+        # Set socket timeout for Vercel environment
+        socket.setdefaulttimeout(10)
+        
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
         return jsonify({'ok':True})
+    except socket.gaierror:
+        return jsonify({'ok':False,'error':f'DNS error: Cannot resolve hostname {smtp_host}. Check your SMTP settings.'}), 500
+    except socket.timeout:
+        return jsonify({'ok':False,'error':'Connection timeout. SMTP server took too long to respond. Check your internet connection.'}), 500
+    except smtplib.SMTPAuthenticationError:
+        return jsonify({'ok':False,'error':'SMTP authentication failed. Check your email and password in Settings.'}), 400
     except Exception as e:
-        return jsonify({'ok':False,'error':str(e)}), 500
+        error_msg = str(e)
+        if 'Name or service not known' in error_msg or 'nodename nor servname provided' in error_msg:
+            return jsonify({'ok':False,'error':f'DNS resolution failed. Check SMTP host: {smtp_host}'}), 500
+        return jsonify({'ok':False,'error':f'Email send failed: {error_msg}'}), 500
 
 # ──────────────────── SERVE FRONTEND ────────────────────
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for Vercel"""
+    return jsonify({'status': 'ok', 'app': 'FreshClean Billing System'}), 200
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        # Fallback if template not found (shouldn't happen but safe)
+        return jsonify({'error': 'Frontend not available', 'details': str(e)}), 500
 
-# Initialize database on startup
-init_db()
+# Initialize database on first request (lazy initialization for Vercel)
+_db_initialized = False
+
+@app.before_request
+def ensure_db_initialized():
+    global _db_initialized
+    if not _db_initialized:
+        try:
+            init_db()
+            _db_initialized = True
+        except Exception as e:
+            print(f"Database initialization warning: {e}")
 
 # Export app for Vercel
 export = app

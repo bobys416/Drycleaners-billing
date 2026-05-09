@@ -1,19 +1,23 @@
 {
   "version": 2,
+  "buildCommand": "pip install -r requirements.txt",
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "static/**",
-      "use": "@vercel/static"
+      "use": "@vercel/python",
+      "config": {
+        "pythonVersion": "3.9"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "src": "/health",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "api/index.py"
     },
     {
       "src": "/(.*)",
@@ -21,6 +25,7 @@
     }
   ],
   "env": {
-    "PYTHON_VERSION": "3.9"
-  }
+    "PYTHONUNBUFFERED": "1"
+  },
+  "regions": ["iad1"]
 }
