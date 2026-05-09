@@ -1,16 +1,28 @@
 {
   "version": 2,
-  "buildCommand": "pip install -r requirements.txt",
+  "buildCommand": "echo 'Dependencies already in requirements.txt'",
   "builds": [
     {
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
-        "pythonVersion": "3.9"
+        "pythonVersion": "3.9",
+        "includeFiles": [
+          "templates/**",
+          "static/**",
+          "dryclean.db"
+        ]
       }
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1",
+      "headers": {
+        "cache-control": "public, max-age=3600"
+      }
+    },
     {
       "src": "/health",
       "dest": "api/index.py"
@@ -25,7 +37,8 @@
     }
   ],
   "env": {
-    "PYTHONUNBUFFERED": "1"
+    "PYTHONUNBUFFERED": "1",
+    "FLASK_ENV": "production"
   },
   "regions": ["iad1"]
 }

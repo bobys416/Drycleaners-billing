@@ -1,6 +1,9 @@
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
+
+# Get the root directory (parent of api folder)
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT_DIR)
 
 from flask import Flask, request, jsonify, send_file, render_template
 from flask_cors import CORS
@@ -14,7 +17,12 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
-app = Flask(__name__)
+# Create Flask app with explicit paths for templates and static files
+app = Flask(
+    __name__,
+    template_folder=os.path.join(ROOT_DIR, 'templates'),
+    static_folder=os.path.join(ROOT_DIR, 'static')
+)
 CORS(app)
 
 # For Vercel, use tmp directory for database
@@ -558,9 +566,31 @@ def health_check():
 def index():
     try:
         return render_template('index.html')
+    except FileNotFoundError:
+        # If template not found, try direct file read
+        try:
+            template_path = os.path.join(ROOT_DIR, 'templates', 'index.html')
+            if os.path.exists(template_path):
+                with open(template_path, 'r', encoding='utf-8') as f:
+                    return f.read()
+            else:
+                return jsonify({
+                    'error': 'Template file not found',
+                    'path': template_path,
+                    'exists': False
+                }), 500
+        except Exception as e:
+            return jsonify({
+                'error': 'Frontend error',
+                'details': str(e),
+                'root_dir': ROOT_DIR
+            }), 500
     except Exception as e:
-        # Fallback if template not found (shouldn't happen but safe)
-        return jsonify({'error': 'Frontend not available', 'details': str(e)}), 500
+        return jsonify({
+            'error': 'Frontend error',
+            'details': str(e),
+            'root_dir': ROOT_DIR
+        }), 500
 
 # Initialize database on first request (lazy initialization for Vercel)
 _db_initialized = False

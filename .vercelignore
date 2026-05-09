@@ -1,0 +1,20 @@
+# Don't ignore templates, static, or other essential files
+# We WANT these in the deployment
+__pycache__
+*.pyc
+*.db-journal
+.git
+.gitignore
+README.md
+*.md
+QUICKSTART.txt
+DNS_ERROR_GUIDE.md
+DEPLOY_VERCEL.md
+start.sh
+setup.bat
+run.bat
+.vscode
+.idea
+*.spec
+build/
+dist/
